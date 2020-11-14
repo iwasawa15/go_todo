@@ -1,0 +1,33 @@
+version: '3'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/go/src/app
+    links:
+      - db
+    depends_on: 
+      - db
+  db:
+    build: 
+      context: .
+      dockerfile: ./mysql/Dockerfile
+    container_name: todo_db
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: hoge
+      MYSQL_DATABASE: go_todo
+      hostname: todo_db
+      command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    ports: 
+      - "3306:3306"
+    volumes:
+      - todo_db_data:/var/log/mysql
+      
+volumes:
+  todo_db_data:
+    driver: local

@@ -6,15 +6,16 @@ import (
 
 type Todo struct {
 	gorm.Model
-	Text   string
-	Status Status
-	Time   int
+	Text     string `json:"text"`
+	Status   Status `json:"status"`
+	Estimate int    `json:"estimate"`
+	Time     int    `json:"time"`
 }
 
 type Status int
 
 const (
-	Task = iota
+	Task Status = iota
 	ThisWeek
 	Doing
 	Review

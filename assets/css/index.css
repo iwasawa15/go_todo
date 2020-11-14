@@ -1,0 +1,29 @@
+body {
+	padding: 10px;
+}
+
+.post-form {
+	height: 200px;
+	width: 500px;
+	background-color: aqua;
+	padding: 20px;
+	box-shadow: 2px 2px black ;
+}
+
+.tasks {
+	margin: auto;
+	padding: 8px;
+	width: 80%;
+	border-radius: 12px;
+	background-color: lightskyblue;
+	box-shadow: 2px 1px 8px grey;
+}
+
+.tasks--list {
+	list-style: none;
+
+}
+
+li {
+	list-style: none;
+}

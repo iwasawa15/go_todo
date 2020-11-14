@@ -2,9 +2,39 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="assets/css/index.css">
     <title>Sample App</title>
 </head>
 <body>
-    <h1>Hello World!!!</h1>
+    <h2>現在タスク</h2>
+    <ul class="tasks">
+        {{ range .todos }}
+            <li class="tasks--list">内容：{{ .Text }}、状態：{{ .Status }}、見積もり：{{ .Estimate  }}、所要時間：{{ .Time }}
+                <label><a href="/detail/{{.ID}}">編集</a></label>
+                <label><a href="/delete_check/{{.ID}}">削除</a></label>
+            </li>
+        {{end}}
+    </ul>
+    <h2>追加</h2>
+    <form method="post" action="todos/new" class="post-form">
+        <p>内容<input type="text" name="text" size="30" placeholder="入力してください" ></p>
+        <p>状態
+            <select name="status">
+                <option value="0">Task</option>
+                <option value="1">ThisWeek</option>
+                <option value="2">Doing</option>
+                <option value="3">Review</option>
+                <option value="4">Done</option>
+                <option value="5">Close</option>
+            </select>
+        </p>
+        <p>見積もり
+            <input type="text" name="estimate">
+        </p>
+        <p>実際
+            <input type="text" name="time">
+        </p>
+        <p><input type="submit" value="Send"></p>
+    </form>
 </body>
 </html>
