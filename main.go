@@ -52,10 +52,13 @@ func main() {
 			return
 		}
 		rawTime := c.PostForm("time")
-		time, err := strconv.Atoi(rawTime)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
+		var time int
+		if rawTime != "" {
+			time, err = strconv.Atoi(rawTime)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+				return
+			}
 		}
 		todo := domain.Todo{Text: text, Status: status, Estimate: estimate, Time: time}
 		infrastructure.DBCreate(todo)
@@ -83,10 +86,13 @@ func main() {
 			return
 		}
 		rawTime := c.PostForm("time")
-		time, err := strconv.Atoi(rawTime)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
+		var time int
+		if rawTime != "" {
+			time, err = strconv.Atoi(rawTime)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+				return
+			}
 		}
 		infrastructure.DBUpdate(id, text, status, estimate, time)
 	})

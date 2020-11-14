@@ -22,11 +22,11 @@ services:
       MYSQL_ROOT_PASSWORD: hoge
       MYSQL_DATABASE: go_todo
       hostname: todo_db
-      command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
     ports: 
       - "3306:3306"
     volumes:
-      - todo_db_data:/var/log/mysql
+      - todo_db_data:/var/lib/mysql
       
 volumes:
   todo_db_data:
