@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"go_todo/domain"
 	"go_todo/infrastructure"
 	"go_todo/infrastructure/middleware"
@@ -37,30 +38,13 @@ func main() {
 	})
 
 	router.POST("todos/new", func(c *gin.Context) {
-		text := c.PostForm("text")
-		rawStatus := c.PostForm("status")
-		statusNum, err := strconv.Atoi(rawStatus)
+		var todo domain.Todo
+		err := c.BindJSON(&todo)
+		fmt.Print(todo)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		status := domain.Status(statusNum)
-		rawEstimate := c.PostForm("estimate")
-		estimate, err := strconv.Atoi(rawEstimate)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		rawTime := c.PostForm("time")
-		var time int
-		if rawTime != "" {
-			time, err = strconv.Atoi(rawTime)
-			if err != nil {
-				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-				return
-			}
-		}
-		todo := domain.Todo{Text: text, Status: status, Estimate: estimate, Time: time}
 		infrastructure.DBCreate(todo)
 		c.Redirect(302, "/")
 	})
