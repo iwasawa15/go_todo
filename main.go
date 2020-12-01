@@ -25,15 +25,27 @@ func main() {
 	Env_load()
 	router := gin.Default()
 	router.Use(middleware.RequestLogger())
-	router.LoadHTMLGlob("templates/*.html")
+	router.LoadHTMLGlob("templates/*/*")
 	router.Static("/assets", "./assets")
 
 	infrastructure.DBInit()
 
 	router.GET("/", func(c *gin.Context) {
 		todos := infrastructure.DBRead()
-		c.HTML(200, "index.html", gin.H{
+		c.HTML(200, "todos/index.html", gin.H{
 			"todos": todos,
+		})
+	})
+
+	router.GET("todos/:id", func(c *gin.Context) {
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		todo := infrastructure.DBRead(id)
+		c.HTML(200, "todos/show.html", gin.H{
+			"todo": todo,
 		})
 	})
 
@@ -79,6 +91,7 @@ func main() {
 			}
 		}
 		infrastructure.DBUpdate(id, text, status, estimate, time)
+
 	})
 
 	router.Run()

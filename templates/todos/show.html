@@ -1,3 +1,4 @@
+{{ define "todos/show.html" }}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,20 +7,18 @@
     <title>Sample App</title>
 </head>
 <body>
-    <h2>現在タスク</h2>
-    <ul class="tasks">
-        {{ range .todos }}
-            <li class="tasks--list">内容：{{ .Text }}、状態：{{ .Status }}、見積もり：{{ .Estimate  }}、所要時間：{{ .Time }}
-                <label><a href="/detail/{{.ID}}">編集</a></label>
-                <label><a href="/delete_check/{{.ID}}">削除</a></label>
-            </li>
-        {{end}}
-    </ul>
+    <h2>{{ .todo }}</h2>
     <h2>追加</h2>
-    <form method="post" action="todos/new" class="post-form">
-        <p>内容<input type="text" name="text" size="30" placeholder="入力してください" ></p>
+		<form method="put" action="todos/{{ .ID }}" class="post-form">
+				<p>内容<input 
+					type="text" 
+					name="text" 
+					size="30" 
+					placeholder="入力してください"
+					value="{{ .Text }}"
+				></p>
         <p>状態
-            <select name="status">
+            <select name="status" value="{{ .Status }}">
                 <option value=0>Task</option>
                 <option value=1>ThisWeek</option>
                 <option value=2>Doing</option>
@@ -29,10 +28,10 @@
             </select>
         </p>
         <p>見積もり
-            <input type="number" name="estimate">
+            <input type="number" name="estimate" value="{{ .Estimate }}">
         </p>
         <p>実際
-            <input type="number" name="time">
+            <input type="number" name="time" value="{{ .Time }}">
         </p>
         <p><input type="submit" value="Send"></p>
     </form>
@@ -69,3 +68,4 @@
     </script>
 </body>
 </html>
+{{ end }}
